@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Guess The Fast Food</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 40px;
+    }
+    #image-container {
+      width: 300px;
+      height: 300px;
+      border: 3px solid black;
+      border-radius: 30px;
+      margin: 0 auto 20px auto;
+      background-size: cover;
+      background-position: center;
+      image-rendering: pixelated;
+    }
+    #textbox {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: 3px solid black;
+      margin-bottom: 10px;
+    }
+    .button {
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 10px;
+      border: 2px solid black;
+      cursor: pointer;
+    }
+    #enter {
+      background-color: green;
+      color: white;
+    }
+    #clear {
+      background-color: darkred;
+      color: white;
+    }
+    #result {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="image-container"></div>
+  <input list="fastfood-items" id="textbox" placeholder="Guess the item...">
+  <datalist id="fastfood-items">
+    <option value="Big Mac">
+    <option value="Whopper">
+    <option value="Taco Bell Crunchwrap">
+    <option value="Chick-fil-A Sandwich">
+    <option value="McChicken">
+    <!-- Add more items here -->
+  </datalist><br>
+  <button id="enter" class="button">Enter</button>
+  <button id="clear" class="button">Clear</button>
+  <div id="result"></div>
+
+  <script>
+    const images = [
+      // mosaic blur levels
+      'fastfood_level5.jpg',
+      'fastfood_level4.jpg',
+      'fastfood_level3.jpg',
+      'fastfood_level2.jpg',
+      'fastfood_level1.jpg',
+      'fastfood_full.jpg'
+    ];
+
+    const answer = "Big Mac".toLowerCase();
+    let guessCount = 0;
+
+    const imageContainer = document.getElementById("image-container");
+    const textbox = document.getElementById("textbox");
+    const result = document.getElementById("result");
+
+    imageContainer.style.backgroundImage = `url('${images[0]}')`;
+
+    document.getElementById("enter").addEventListener("click", () => {
+      const guess = textbox.value.trim().toLowerCase();
+
+      if (!guess) return;
+
+      guessCount++;
+      if (guess === answer) {
+        imageContainer.style.backgroundImage = `url('${images[images.length - 1]}')`;
+        result.textContent = "You got it right!";
+      } else {
+        if (guessCount < images.length) {
+          imageContainer.style.backgroundImage = `url('${images[guessCount]}')`;
+          result.textContent = `Wrong! ${5 - guessCount} guesses left.`;
+        } else {
+          imageContainer.style.backgroundImage = `url('${images[images.length - 1]}')`;
+          result.textContent = `Out of guesses! The answer was: Big Mac.`;
+        }
+      }
+    });
+
+    document.getElementById("clear").addEventListener("click", () => {
+      textbox.value = "";
+      result.textContent = "";
+    });
+  </script>
+</body>
+</html>
